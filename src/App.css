@@ -13,7 +13,11 @@ button {
   border: 2px solid blue;
   border-radius: 10px;
 }
+button:hover {
+  background-color: darkcyan;
+  color: white;
+}
 
 h1 {
-  text-align: center
+  text-align: center;
 }

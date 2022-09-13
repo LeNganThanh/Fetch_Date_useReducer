@@ -1,10 +1,13 @@
 import React, { useEffect, useReducer } from "react";
 import "./App.css";
+
+//initial variables
 const initState = {
   resource: "users",
   data: [],
 };
 
+//declare reducer
 const reducer = (state, action) => {
   switch (action.type) {
     case "setResource": {
@@ -24,9 +27,6 @@ const reducer = (state, action) => {
   }
 };
 function App() {
-  /*   const [resource, setResource] = useState("Posts");
-  const [items, setItems] = useState([]);
- */
   const [state, dispatch] = useReducer(reducer, initState);
 
   useEffect(() => {
@@ -40,6 +40,7 @@ function App() {
     fetchData();
   }, [state.resource]);
 
+  //get data via parameter get from fetch
   function setItems(datas) {
     dispatch({
       type: "getData",
@@ -47,6 +48,7 @@ function App() {
     });
   }
 
+  //get sort of resource via parameter get from Click event
   function setResource(val) {
     dispatch({
       type: "setResource",
@@ -61,11 +63,13 @@ function App() {
         <button onClick={() => setResource("Comments")}>Comments</button>
       </div>
       <h1>{state.resource}</h1>
-      <ul>
+      <ol>
         {state.data.map(item => (
-          <li key={item.id}>{JSON.stringify(item)}</li>
+          <li key={item.id} style={{ padding: "8px" }}>
+            {JSON.stringify(item)}
+          </li>
         ))}
-      </ul>
+      </ol>
     </div>
   );
 }
