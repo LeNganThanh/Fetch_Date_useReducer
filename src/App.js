@@ -1,42 +1,33 @@
 import React, { useEffect, useReducer } from "react";
 import "./App.css";
-const initialState = {
-  resource: "Posts",
-  items: [],
+const initState = {
+  resource: "users",
+  data: [],
 };
+
 const reducer = (state, action) => {
   switch (action.type) {
-    case "Posts": {
+    case "setResource": {
       return {
         ...state,
-        resource: action.value,
+        resource: action.resVal,
       };
     }
-    case "Users": {
+    case "getData": {
       return {
         ...state,
-        resource: action.value,
+        data: action.valData,
       };
     }
-    case "Comments": {
-      return {
-        ...state,
-        resource: action.value,
-      };
-    }
-    case "data": {
-      return {
-        ...state,
-        items: action.value,
-      };
-    }
-    default: {
-      return state;
-    }
+    default:
+      throw new Error("Data not found.");
   }
 };
 function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  /*   const [resource, setResource] = useState("Posts");
+  const [items, setItems] = useState([]);
+ */
+  const [state, dispatch] = useReducer(reducer, initState);
 
   useEffect(() => {
     async function fetchData() {
@@ -49,44 +40,34 @@ function App() {
     fetchData();
   }, [state.resource]);
 
-  function setItems(val) {
+  function setItems(datas) {
     dispatch({
-      type: "data",
-      value: val,
+      type: "getData",
+      valData: datas,
+    });
+  }
+
+  function setResource(val) {
+    dispatch({
+      type: "setResource",
+      resVal: val,
     });
   }
   return (
     <div className="container">
       <div>
-        <button
-          onClick={() => {
-            dispatch({ type: "Posts", value: "Posts" });
-          }}
-        >
-          Posts
-        </button>
-        <button
-          onClick={() => {
-            dispatch({ type: "Users", value: "Users" });
-          }}
-        >
-          Users
-        </button>
-        <button
-          onClick={() => {
-            dispatch({ type: "Comments", value: "Comments" });
-          }}
-        >
-          Comments
-        </button>
+        <button onClick={() => setResource("Posts")}>Posts</button>
+        <button onClick={() => setResource("Users")}>Users</button>
+        <button onClick={() => setResource("Comments")}>Comments</button>
       </div>
       <h1>{state.resource}</h1>
       <ul>
-        {state.items.map(item => (
+        {state.data.map(item => (
           <li key={item.id}>{JSON.stringify(item)}</li>
         ))}
       </ul>
     </div>
   );
 }
+
 export default App;
